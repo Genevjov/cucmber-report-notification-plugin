@@ -2,23 +2,23 @@ package io.genevjov.notifier.plugin.model.property.data;
 
 public class ReportData {
 
-    private Type type;
-    private String reportFileType;
+    private NotificationType notificationType;
+    private ReportFileType reportFileType;
     private String reportFilePath;
 
-    public Type getType() {
-        return type;
+    public NotificationType getNotificationType() {
+        return notificationType;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setNotificationType(NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 
-    public String getReportFileType() {
+    public ReportFileType getReportFileType() {
         return reportFileType;
     }
 
-    public void setReportFileType(String reportFileType) {
+    public void setReportFileType(ReportFileType reportFileType) {
         this.reportFileType = reportFileType;
     }
 

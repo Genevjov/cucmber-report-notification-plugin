@@ -1,22 +1,37 @@
 package io.genevjov.notifier.plugin;
 
 import io.cucumber.plugin.ConcurrentEventListener;
-import io.cucumber.plugin.event.Event;
-import io.cucumber.plugin.event.EventHandler;
-import io.cucumber.plugin.event.EventPublisher;
-import io.cucumber.plugin.event.TestRunFinished;
-import io.genevjov.notifier.plugin.model.property.PropertyLoader;
+import io.cucumber.plugin.event.*;
+import io.genevjov.notifier.plugin.model.Notification;
 import io.genevjov.notifier.plugin.model.property.data.NotificationProperties;
+import io.genevjov.notifier.plugin.notification.NotificationBuildingStrategy;
+
+import java.time.Duration;
+import java.time.Instant;
 
 public class ReportNotificationPlugin implements ConcurrentEventListener {
 
+    private Instant testStartTime;
+
     @Override
     public void setEventPublisher(EventPublisher eventPublisher) {
-        EventHandler<TestRunFinished> testSourceReadHandler = this::handleTestFinished;
-        eventPublisher.registerHandlerFor(TestRunFinished.class, testSourceReadHandler);
+        EventHandler<TestRunStarted> testRunStartedEventHandler = this::handleTestStarted;
+        EventHandler<TestRunFinished> testRunFinishedEventHandler = this::handleTestFinished;
+        eventPublisher.registerHandlerFor(TestRunStarted.class, testRunStartedEventHandler);
+        eventPublisher.registerHandlerFor(TestRunFinished.class, testRunFinishedEventHandler);
+    }
+
+    private void handleTestStarted(Event event) {
+        this.testStartTime = event.getInstant();
+
     }
 
     private void handleTestFinished(Event event) {
-        // TODO add implementation
+        Duration duration = Duration.between(testStartTime, event.getInstant());
+        NotificationProperties notificationProperties = new PropertyLoader().load();
+        NotificationBuildingStrategy notificationBuildingStrategy = new NotificationBuildingStrategy();
+        Notification notification = notificationBuildingStrategy.build(
+                notificationProperties.getReportData(), duration.getSeconds());
+        System.out.println(notification);
     }
 }

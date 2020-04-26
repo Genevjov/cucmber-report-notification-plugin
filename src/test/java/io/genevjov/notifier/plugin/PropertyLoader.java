@@ -1,4 +1,4 @@
-package io.genevjov.notifier.plugin.model.property;
+package io.genevjov.notifier.plugin;
 
 import io.genevjov.notifier.plugin.model.property.data.NotificationProperties;
 import org.yaml.snakeyaml.Yaml;
