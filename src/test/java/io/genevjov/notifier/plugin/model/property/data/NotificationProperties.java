@@ -5,8 +5,17 @@ import io.genevjov.notifier.plugin.model.property.data.destination.Slack;
 
 public class NotificationProperties {
 
+    private ReportData reportData;
     private Email email;
     private Slack slack;
+
+    public ReportData getReportData() {
+        return reportData;
+    }
+
+    public void setReportData(ReportData reportData) {
+        this.reportData = reportData;
+    }
 
     public Email getEmail() {
         return email;
