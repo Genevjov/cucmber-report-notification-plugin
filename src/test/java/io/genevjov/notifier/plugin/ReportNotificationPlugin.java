@@ -5,6 +5,8 @@ import io.cucumber.plugin.event.Event;
 import io.cucumber.plugin.event.EventHandler;
 import io.cucumber.plugin.event.EventPublisher;
 import io.cucumber.plugin.event.TestRunFinished;
+import io.genevjov.notifier.plugin.model.property.PropertyLoader;
+import io.genevjov.notifier.plugin.model.property.data.NotificationProperties;
 
 public class ReportNotificationPlugin implements ConcurrentEventListener {
 
