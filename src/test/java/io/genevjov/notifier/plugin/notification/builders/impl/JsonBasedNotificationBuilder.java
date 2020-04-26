@@ -13,15 +13,15 @@ import static java.lang.String.format;
 
 public class JsonBasedNotificationBuilder implements NotificationBuilder {
 
-    public static final String TEST_FAILED_MESSAGE_TEMPLATE = "⚠️ File %s - Scenario %s -- Step %s -- Arguments (%s) -- failed with message: %s ⚠️";
-    public static final String TESTS_SUCCESS_MESSAGE_TEMPLATE = "\uD83D\uDFE2 All tests passed successfully \uD83D\uDFE2";
-    public static final String DURATION_TEMPLATE = "\nTests duration: %d";
+    public static final String TEST_FAILED_MESSAGE_TEMPLATE = "️File %s - Scenario %s -- Step %s -- Arguments (%s) -- failed with message:\n %s\n️";
+    public static final String TESTS_SUCCESS_MESSAGE_TEMPLATE = "All tests passed successfully !!!\n";
+    public static final String DURATION_TEMPLATE = "Tests duration: %d sec";
 
     @Override
     public Notification build(File file, Long duration) {
         Notification notification = new Notification();
         List<DefaultCucumberReportEntity> reportEntities = parseJsonReport(file);
-        String message =  generateMessage(reportEntities).concat(format(DURATION_TEMPLATE, duration));
+        String message = generateMessage(reportEntities).concat(format(DURATION_TEMPLATE, duration));
         notification.setMessage(message);
         notification.setReport(file);
         return notification;
@@ -33,8 +33,10 @@ public class JsonBasedNotificationBuilder implements NotificationBuilder {
             for (DefaultCucumberElement element : reportEntity.getElements()) {
                 for (DefaultCucumberStep step : element.getSteps()) {
                     if (!isPassed(step)) {
-                        failMessageBuilder.append(format(TEST_FAILED_MESSAGE_TEMPLATE, reportEntity.getUri(),
-                                element.getName(), step.getName(),step.getMatch().getArguments(),
+                        failMessageBuilder.append(format(TEST_FAILED_MESSAGE_TEMPLATE,
+                                reportEntity.getUri(),
+                                element.getName(), step.getName(),
+                                step.getMatch().getArguments(),
                                 step.getResult().getErrorMessage()));
                     }
                 }

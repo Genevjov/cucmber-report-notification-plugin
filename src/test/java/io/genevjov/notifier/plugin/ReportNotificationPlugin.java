@@ -2,6 +2,7 @@ package io.genevjov.notifier.plugin;
 
 import io.cucumber.plugin.ConcurrentEventListener;
 import io.cucumber.plugin.event.*;
+import io.genevjov.notifier.integration.SlackSender;
 import io.genevjov.notifier.plugin.model.Notification;
 import io.genevjov.notifier.plugin.model.property.data.NotificationProperties;
 import io.genevjov.notifier.plugin.notification.NotificationBuildingStrategy;
@@ -32,6 +33,12 @@ public class ReportNotificationPlugin implements ConcurrentEventListener {
         NotificationBuildingStrategy notificationBuildingStrategy = new NotificationBuildingStrategy();
         Notification notification = notificationBuildingStrategy.build(
                 notificationProperties.getReportData(), duration.getSeconds());
-        System.out.println(notification);
+        SlackSender slackSender = new SlackSender();
+        try {
+
+            slackSender.send(notification, notificationProperties.getSlack().getWebHook());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
