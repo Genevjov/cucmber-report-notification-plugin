@@ -26,7 +26,7 @@ email:
     login: "changeme@gmail.com"
     password: "changeme"
 ```
-
+# Property must be stored by path src/test/resources/report-notification.yml
 | Property name | Meaning  |
 | ------------ | ------------ |
 |  reportData | Storage for notification type, Cucumber report type, path to report |
