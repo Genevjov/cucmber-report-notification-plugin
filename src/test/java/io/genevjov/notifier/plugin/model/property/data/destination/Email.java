@@ -4,7 +4,7 @@ import io.genevjov.notifier.plugin.model.property.data.SmtpMailProperties;
 
 import java.util.List;
 
-public class Email {
+public class Email extends Destination{
 
     private List<String> receivers;
     private String sendFrom;

@@ -5,17 +5,8 @@ import io.genevjov.notifier.plugin.model.property.data.destination.Slack;
 
 public class NotificationProperties {
 
-    private Type type;
     private Email email;
     private Slack slack;
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
 
     public Email getEmail() {
         return email;

@@ -1,6 +1,6 @@
 package io.genevjov.notifier.plugin.model.property.data.destination;
 
-public class Slack {
+public class Slack extends Destination{
 
     private String webHook;
 
