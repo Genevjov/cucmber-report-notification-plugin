@@ -4,17 +4,13 @@ Report notification plugin for Cucumber framework
 Property structure for reporting:
 
 ```yaml
-slack:
-  reportData:
-    type: "PLAIN_FAIL_REPORT"
+ reportData:
+    notificationType: "HTML"
     reportFileType: "changeme"
     reportFilePath: "changeme"
+slack:
   webHook: "changeme"
 email:
-  reportData:
-    type: "HTML"
-    reportFileType: "changeme"
-    reportFilePath: "changeme"
   receivers:
     - "changeme@changeme.com"
     - "changeme@changeme.com"
@@ -28,8 +24,8 @@ email:
 ```
 | Property name | Meaning  |
 | ------------ | ------------ |
-|  reportData | Storage for notification type, Cucumber report type, path to report |
-|  reportData.type | Notification content type |
+|  reportData | Storage for notification notificationType, Cucumber report notificationType, path to report |
+|  reportData.notificationType | Notification content notificationType |
 |  reportData.reportFileType | Type of Cucmber report (HTML/JSON)   |
 |  reportData.reportFilePath | Path to Cucmber report  |
 | slack  | [REPORT DESTINATION] Wrapper for Slack intgreation properties storing  |
@@ -45,5 +41,12 @@ email:
 | email.smtpMailProperties.password | SMTP password|
 
 # Property must be stored by path:
- - src/test/resources/report-notification.yml
+ - src/test/resources/report-notification.yml 
 
+# Plugin activation:
+
+add this line to plugin definition annotation
+`
+"json:target/cucumber-reports/Cucumber.json",
+        "io.genevjov.notifier.plugin.ReportNotificationPlugin"
+`
