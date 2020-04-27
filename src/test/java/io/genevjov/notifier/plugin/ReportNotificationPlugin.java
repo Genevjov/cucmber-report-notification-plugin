@@ -13,7 +13,7 @@ import java.time.Instant;
 public class ReportNotificationPlugin implements ConcurrentEventListener {
 
     private Instant testStartTime;
-
+    private NotificationProperties notificationProperties;
     @Override
     public void setEventPublisher(EventPublisher eventPublisher) {
         EventHandler<TestRunStarted> testRunStartedEventHandler = this::handleTestStarted;
@@ -24,19 +24,19 @@ public class ReportNotificationPlugin implements ConcurrentEventListener {
 
     private void handleTestStarted(Event event) {
         this.testStartTime = event.getInstant();
+        this.notificationProperties = new PropertyLoader().load();
+
 
     }
 
     private void handleTestFinished(Event event) {
         Duration duration = Duration.between(testStartTime, event.getInstant());
-        NotificationProperties notificationProperties = new PropertyLoader().load();
         NotificationBuildingStrategy notificationBuildingStrategy = new NotificationBuildingStrategy();
         Notification notification = notificationBuildingStrategy.build(
-                notificationProperties.getReportData(), duration.getSeconds());
+                this.notificationProperties.getReportData(), duration.getSeconds());
         SlackSender slackSender = new SlackSender();
         try {
-
-            slackSender.send(notification, notificationProperties.getSlack().getWebHook());
+            slackSender.send(notification, this.notificationProperties.getSlack().getWebHook());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

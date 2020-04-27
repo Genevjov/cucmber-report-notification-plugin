@@ -10,26 +10,28 @@ import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 
+import static java.util.Objects.nonNull;
+
 public class SlackSender {
 
     public void send(Notification notification, String slackWebHook) {
-
-        CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(slackWebHook);
-        SlackMessage slackMessage = new SlackMessage();
-        slackMessage.setText(notification.getMessage());
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(slackMessage);
-            StringEntity entity = new StringEntity(json);
-            httpPost.setEntity(entity);
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-            client.execute(httpPost);
-            client.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (nonNull(slackWebHook) && slackWebHook.isEmpty()) {
+            CloseableHttpClient client = HttpClients.createDefault();
+            HttpPost httpPost = new HttpPost(slackWebHook);
+            SlackMessage slackMessage = new SlackMessage();
+            slackMessage.setText(notification.getMessage());
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                String json = objectMapper.writeValueAsString(slackMessage);
+                StringEntity entity = new StringEntity(json);
+                httpPost.setEntity(entity);
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("Content-type", "application/json");
+                client.execute(httpPost);
+                client.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
-
 }
